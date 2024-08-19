@@ -1,14 +1,27 @@
 <script setup lang="ts">
-import useUserStore from "@/stores/useUserStore";
-import {usePiniaStore} from "@/stores/usePiniaStore";
-import {computed, onMounted} from "vue";
+import apiClient from '@/services/apiClient.js';
+import {onMounted, reactive} from "vue";
+import ContactCard from "@/components/ContactCard.vue";
+const state = reactive({
+  contacts: []
+});
 
-const pinia = usePiniaStore();
-onMounted(() => {
-  pinia.getUser();
-})
+function showContacts(){
+  apiClient.get('/api/contact/index').then((response) => {
+    state.contacts = response.data;
+    console.log(state.contacts)
+  })
+}
+
+onMounted(showContacts);
 </script>
 
 <template>
-Bem-Vindo {{ pinia.user?.name }}
+  <RouterLink to="/addContact">Adicionar contato</RouterLink>
+  <h1>Contatos:</h1>
+  <ContactCard
+      v-for="contact in state.contacts"
+      :key="contact.id"
+      :contact="contact"
+  />
 </template>
