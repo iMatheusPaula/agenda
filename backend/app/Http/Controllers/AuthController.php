@@ -19,4 +19,11 @@ class AuthController extends Controller
         $request->session()->regenerate();
         return response()->json('Authorized', Response::HTTP_OK);
     }
+
+    public function logout(Request $request): Response
+    {
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return response()->json('Logged out', Response::HTTP_OK);
+    }
 }
