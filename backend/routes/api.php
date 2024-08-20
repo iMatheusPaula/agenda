@@ -1,11 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('web');
+use App\Http\Controllers\ContactController;
 
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])
     ->name('auth.login')->middleware('web');
@@ -16,17 +12,22 @@ Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])
     ->name('auth.logout')->middleware(['web','auth:sanctum']);
 
-Route::post('/contact/store', [\App\Http\Controllers\ContactController::class, 'store'])
-    ->name('contact.store')->middleware(['web','auth:sanctum']);
+Route::group([
+    'prefix' => 'contact',
+    'middleware' => ['web','auth:sanctum']
+], function () {
+    Route::post('/store', [ContactController::class, 'store'])
+        ->name('contact.store');
 
-Route::get('/contact/index', [\App\Http\Controllers\ContactController::class, 'index'])
-    ->name('contact.index')->middleware(['web','auth:sanctum']);
+    Route::get('/index', [ContactController::class, 'index'])
+        ->name('contact.index');
 
-Route::get('/contact/show/{id}', [\App\Http\Controllers\ContactController::class, 'show'])
-    ->name('contact.show')->middleware(['web','auth:sanctum']);
+    Route::get('/show/{id}', [ContactController::class, 'show'])
+        ->name('contact.show');
 
-Route::delete('/contact/destroy/{id}', [\App\Http\Controllers\ContactController::class, 'destroy'])
-    ->name('contact.destroy')->middleware(['web','auth:sanctum']);
+    Route::delete('/destroy/{id}', [ContactController::class, 'destroy'])
+        ->name('contact.destroy');
 
-Route::post('/contact/update/{id}', [\App\Http\Controllers\ContactController::class, 'update'])
-    ->name('contact.update')->middleware(['web','auth:sanctum']);
+    Route::post('/update/{id}', [ContactController::class, 'update'])
+        ->name('contact.update');
+});
