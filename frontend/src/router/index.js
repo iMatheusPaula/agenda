@@ -5,7 +5,7 @@ export const routes = [
     {
         path: '/',
         name: 'Home',
-        component: () => import('@/views/Home.vue'),
+        component: () => import('@/views/HomeView.vue'),
         meta: {
             auth: true
         }
@@ -13,7 +13,7 @@ export const routes = [
     {
         path: '/addContact',
         name: 'addContact',
-        component: () => import('@/views/AddContact.vue'),
+        component: () => import('@/views/AddContactView.vue'),
         meta: {
             auth: true
         }
@@ -21,7 +21,7 @@ export const routes = [
     {
         path: '/contactPage/:id',
         name: 'ContactPage',
-        component: () => import('@/views/ContactPage.vue'),
+        component: () => import('@/views/ContactPageView.vue'),
         meta: {
             auth: true
         },
