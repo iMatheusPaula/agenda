@@ -1,7 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import {reactive} from "vue";
 import apiClient from "@/services/apiClient.js";
+import {useToast} from "vue-toastification";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
+const toast = useToast();
 const state = reactive({
   name: '',
   email: '',
@@ -12,6 +16,13 @@ async function addContact(){
     name: state.name,
     email: state.email,
     phone: state.phone,
+  }).then(() => {
+    toast.success(`${state.name} foi criado com sucesso.`);
+    router.push({ name: 'Home' });
+  })
+      .catch((error) => {
+    if(error.response.status === 422) toast.error("Informe os dados corretamente.");
+    else toast.error("Ocorreu um erro no servidor. Tente novamente mais tarde.");
   })
 }
 </script>
