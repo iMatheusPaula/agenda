@@ -1,33 +1,29 @@
-<script setup lang="ts">
+<script setup>
 import {useRouter} from "vue-router";
+import Image from "@/components/Image.vue";
 
+const router = useRouter();
 const props = defineProps({
   contact: {type: Object, required: true}
 });
-const router = useRouter();
-function goToContactPage()
-{
+
+function goToContactPage() {
   router.push({ name: 'ContactPage', params: { id: props.contact.id }})
 }
 </script>
 
 <template>
-  <div class="">
-    <div class="border-solid border-gray-200 border-2 p-2 justify-between flex w-1/2 m-3 cursor-pointer hover:bg-gray-100"
+  <div class="lg:w-1/2">
+    <div class="gap-x-4 flex justify-self-auto bg-white rounded-xl shadow-sm p-5 m-3 cursor-pointer hover:bg-gray-100"
          @click="goToContactPage"
     >
-      <div>
-        <h1>{{ contact.name }}</h1>
-        <p>{{ contact.phone }}</p>
+      <Image :image="contact.image" :name="contact.name" class="h-12 w-12" />
+      <div class="min-w-0 flex-auto">
+        <h3 class="font-semibold text-gray-900">{{ contact.name }}</h3>
+        <p class="text-sm font-semibold text-gray-600">{{ contact.phone }}</p>
         <p>{{ contact.email }}</p>
       </div>
-      <div class="flex-col flex">
-        <img
-            width="80"
-            class="rounded-full"
-            src="https://sampi.net.br/dir-arquivo-imagem/2024/01/652b91ae89e68c67939494ed70d5c4df.jpeg"
-        >
-      </div>
+
     </div>
   </div>
 </template>

@@ -33,18 +33,23 @@ class ContactController extends Controller
     {
         $authUserId = Auth::user()->id;
         $validator = Validator::make(
-            ['name' => $request->input('name')],
-            ['name' => ['required', 'string', 'max:255']]
+            [
+                'name' => $request->input('name'),
+            ],
+            [
+                'name' => ['required', 'string', 'max:255'],
+            ]
         );
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         try {
+            $path = $request->file('image')->store('images', 'public');
             $contact = new Contact();
             $contact->name = $request->input('name');
             $contact->phone = $request->input('phone');
             $contact->email = $request->input('email');
+            $contact->image = $path;
             $contact->user_id = $authUserId;
             $contact->save();
             return response()->json('success', Response::HTTP_CREATED);

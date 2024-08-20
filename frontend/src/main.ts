@@ -1,8 +1,8 @@
-import './assets/main.css'
-import 'vue-toastification/dist/index.css'
+import './assets/main.css';
+import 'vue-toastification/dist/index.css';
 
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 import {createPinia} from "pinia";
 import router from "@/router";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import {usePiniaStore} from "@/stores/usePiniaStore";
+import {useAuthStore} from "@/stores/useAuthStore";
 
 export const routes = [
     {
@@ -67,13 +67,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const pinia = usePiniaStore();
+    const auth = useAuthStore();
     if(to.meta.auth){
-        if(!pinia.isLoggedIn) next({name: 'Login'});
+        if(!auth.isLoggedIn) next({name: 'Login'});
         else next();
     }
     else if(!to.meta.auth) {
-        if(pinia.isLoggedIn) next({name: 'Home'});
+        if(auth.isLoggedIn) next({name: 'Home'});
         else next();
     }
 })
