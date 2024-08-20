@@ -31,7 +31,7 @@ class ContactController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $id = 1;
+        $authUserId = Auth::user()->id;
         $validator = Validator::make(
             ['name' => $request->input('name')],
             ['name' => ['required', 'string', 'max:255']]
@@ -45,7 +45,7 @@ class ContactController extends Controller
             $contact->name = $request->input('name');
             $contact->phone = $request->input('phone');
             $contact->email = $request->input('email');
-            $contact->user_id = $id;
+            $contact->user_id = $authUserId;
             $contact->save();
             return response()->json('success', Response::HTTP_CREATED);
         } catch (\Exception $e){
