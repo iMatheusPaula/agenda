@@ -35,27 +35,39 @@ onMounted(getContact);
   <div v-if="state.isLoading">
     Carregando..
   </div>
-  <div v-else class="bg-white rounded-2xl shadow-2xl w-96 lg:w-1/3 justify-center px-6 py-20 lg:px-8">
-    <button class="btn" @click="router.back()">Voltar</button>
-    <div class="flex flex-col p-2 items-center justify-center gap-7">
-      <Image :image="state.contact.image" class="h-12 w-12" />
+  <div v-else class="bg-white rounded-2xl shadow-2xl w-96 py-10 justify-center px-6 lg:w-1/3 lg:px-8">
+    <div @click="router.back()" class="mb-7 text-black transition duration-200 flex flex-row">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+        <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+      </svg>
+      Voltar
+    </div>
+    <div class="flex flex-col items-center justify-center gap-5">
+      <Image :image="state.contact.image" class="h-48 w-48" />
       <h1 class="text-gray-900 tracking-tight font-bold text-2xl text-center mb-3">{{ state.contact.name }}</h1>
     </div>
-    <div class="flex flex-col p-2">
-      <span class="infos">Celular: {{ state.contact.phone }}</span>
-      <span class="infos">E-mail: {{ state.contact.email }}</span>
-      <button class="btn" @click="btnUpdateHandler">Editar</button>
-      <button class="btn" @click="bntDeleteHandler">Deletar</button>
+    <div class="flex flex-col">
+      <div class="mt-6 border-t border-gray-100 mx-2">
+      <dl class="divide-y divide-gray-100">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Celular</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ state.contact.phone }}</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">E-mail</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ state.contact.email }}</dd>
+        </div>
+      </dl>
+      </div>
+      <div class="w-full flex flex-row">
+        <button class="btn" @click="btnUpdateHandler">Editar</button>
+        <button class="btn" @click="bntDeleteHandler">Deletar</button>
+      </div>
     </div>
   </div>
-
 </template>
 <style scoped>
-.infos {
-  @apply p-2 m-2 border-0
-  text-gray-900 placeholder:text-gray-500 sm:text-sm sm:leading-6
-}
-.btn{
-  @apply p-2 bg-blue-600 rounded-md mx-2 mt-4 mb-7 hover:bg-blue-500 leading-6 shadow-inner text-white transition duration-200
+button{
+  @apply p-2 bg-blue-600 rounded-md mx-2 mt-4 hover:bg-blue-500 leading-6 shadow-inner text-white transition duration-200 w-full
 }
 </style>
