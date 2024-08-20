@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,14 +30,14 @@ class ContactController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $authUserId = Auth::user()->id;
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|string|email|max:255',
-            'phone' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg',
-        ]);
         try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'nullable|string|email|max:255',
+                'phone' => 'nullable|string|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg',
+            ]);
+            $authUserId = Auth::user()->id;
             $path = null;
             if($request->hasFile('image')){
                 $path = $request->file('image')->store('images', 'public');
@@ -78,17 +76,16 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id): JsonResponse
     {
-        $authUser = Auth::user()->id;
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|string|email|max:255',
-            'phone' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg',
-        ]);
         try{
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'nullable|string|email|max:255',
+                'phone' => 'nullable|string|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg',
+            ]);
+            $authUser = Auth::user()->id;
             $contact = Contact::where('user_id', '=', $authUser)->findOrFail($id);
             if($contact){
-
                 $contact->name = $request->input('name');
                 $contact->phone = $request->input('phone');
                 $contact->email = $request->input('email');
