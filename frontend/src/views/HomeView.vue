@@ -4,6 +4,7 @@ import {onMounted, reactive} from "vue";
 import ContactCard from "@/components/ContactCard.vue";
 import {useToast} from "vue-toastification";
 import Image from "@/components/Image.vue";
+import IconLoading from "@/components/IconLoading.vue";
 
 const toast = useToast();
 const state = reactive({
@@ -24,11 +25,11 @@ async function showContacts(){
 onMounted(showContacts);
 </script>
 <template>
-  <div class="w-96 py-10 justify-center px-6 lg:w-2/6 lg:px-8">
-    <div v-if="state.isLoading">Carregando...</div>
-
-    <div v-else>
-      <div class="">
+  <div v-if="state.isLoading">
+    <IconLoading />
+  </div>
+  <div v-else class="w-96 py-10 justify-center px-6 lg:w-2/6 lg:px-8">
+      <div>
         <RouterLink to="/addContact">
           <button class="bg-black text-white rounded-md px-3 py-2.5 text-center inline-flex items-center hover:bg-gray-800 transition duration-200">
             <svg class="w-5 h-5 me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e8eaed">
@@ -50,6 +51,5 @@ onMounted(showContacts);
             :contact="contact"
         />
       </div>
-    </div>
   </div>
 </template>

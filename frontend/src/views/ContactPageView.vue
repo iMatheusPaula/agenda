@@ -4,6 +4,7 @@ import apiClient from "@/services/apiClient";
 import {onMounted, reactive, ref} from "vue";
 import {useToast} from "vue-toastification";
 import Image from "@/components/Image.vue";
+import IconLoading from "@/components/IconLoading.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -33,7 +34,7 @@ onMounted(getContact);
 </script>
 <template>
   <div v-if="state.isLoading">
-    Carregando..
+    <IconLoading />
   </div>
   <div v-else class="bg-white rounded-2xl shadow-2xl w-96 py-10 justify-center px-6 lg:w-1/3 lg:px-8">
     <div @click="router.back()" class="mb-7 text-black transition duration-200 flex flex-row">
