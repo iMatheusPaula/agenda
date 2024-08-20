@@ -67,6 +67,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    document.title = "Agenda :)";
     const auth = useAuthStore();
     if(to.meta.auth){
         if(!auth.isLoggedIn) next({name: 'Login'});
