@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +24,6 @@ class ContactController extends Controller
             return response()->json($response, Response::HTTP_OK);
         } catch (\Exception $e){
             return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
-            //REMOVE $e
         }
     }
 
@@ -32,19 +33,17 @@ class ContactController extends Controller
     public function store(Request $request): JsonResponse
     {
         $authUserId = Auth::user()->id;
-        $validator = Validator::make(
-            [
-                'name' => $request->input('name'),
-            ],
-            [
-                'name' => ['required', 'string', 'max:255'],
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|string|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg',
+        ]);
         try {
-            $path = $request->file('image')->store('images', 'public');
+            $path = null;
+            if($request->hasFile('image')){
+                $path = $request->file('image')->store('images', 'public');
+            }
             $contact = new Contact();
             $contact->name = $request->input('name');
             $contact->phone = $request->input('phone');
@@ -55,7 +54,6 @@ class ContactController extends Controller
             return response()->json('success', Response::HTTP_CREATED);
         } catch (\Exception $e){
             return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
-            //REMOVE $e
         }
     }
 
@@ -72,7 +70,6 @@ class ContactController extends Controller
             return response()->json($response, Response::HTTP_OK);
         } catch (\Exception $e){
             return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
-            //REMOVE $e
         }
     }
 
@@ -81,20 +78,31 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id): JsonResponse
     {
+        $authUser = Auth::user()->id;
         $request->validate([
             'name' => 'required|string|max:255',
+            'email' => 'nullable|string|email|max:255',
+            'phone' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg',
         ]);
         try{
-            $authUser = Auth::user()->id;
             $contact = Contact::where('user_id', '=', $authUser)->findOrFail($id);
             if($contact){
-                $contact->update($request->all());
+
+                $contact->name = $request->input('name');
+                $contact->phone = $request->input('phone');
+                $contact->email = $request->input('email');
+                if ($request->hasFile('image')) {
+                    if ($contact->image) Storage::disk('public')->delete($contact->image);
+                    $path = $request->file('image')->store('images', 'public');
+                    $contact->image = $path;
+                }
+                $contact->save();
                 return response()->json('success', Response::HTTP_OK);
             }
         }
         catch (\Exception $e){
             return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
-            //REMOVE $e
         }
     }
 
@@ -105,15 +113,15 @@ class ContactController extends Controller
     {
         try{
             $authUser = Auth::user()->id;
-            $response = Contact::where('id', $id)
+            $contact = Contact::where('id', $id)
                 ->where('user_id', $authUser)
                 ->delete();
-            if(!$response) return response()->json('', Response::HTTP_INTERNAL_SERVER_ERROR);
+            if($contact->image) Storage::disk('public')->delete($contact->image);
+            if(!$contact) return response()->json('', Response::HTTP_INTERNAL_SERVER_ERROR);
             else return response()->json('', Response::HTTP_NO_CONTENT);
         }
         catch (\Exception $e){
             return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
-            //REMOVE $e
         }
 
     }

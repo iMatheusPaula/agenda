@@ -28,5 +28,5 @@ Route::get('/contact/show/{id}', [\App\Http\Controllers\ContactController::class
 Route::delete('/contact/destroy/{id}', [\App\Http\Controllers\ContactController::class, 'destroy'])
     ->name('contact.destroy')->middleware(['web','auth:sanctum']);
 
-Route::put('/contact/update/{id}', [\App\Http\Controllers\ContactController::class, 'update'])
+Route::post('/contact/update/{id}', [\App\Http\Controllers\ContactController::class, 'update'])
     ->name('contact.update')->middleware(['web','auth:sanctum']);

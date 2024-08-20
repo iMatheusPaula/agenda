@@ -38,7 +38,7 @@ onMounted(getContact);
   <div v-else class="bg-white rounded-2xl shadow-2xl w-96 lg:w-1/3 justify-center px-6 py-20 lg:px-8">
     <button class="btn" @click="router.back()">Voltar</button>
     <div class="flex flex-col p-2 items-center justify-center gap-7">
-      <Image :image="kkk" :name="Maath" class="h-12 w-12" />
+      <Image :image="state.contact.image" class="h-12 w-12" />
       <h1 class="text-gray-900 tracking-tight font-bold text-2xl text-center mb-3">{{ state.contact.name }}</h1>
     </div>
     <div class="flex flex-col p-2">

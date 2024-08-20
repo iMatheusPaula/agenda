@@ -8,26 +8,41 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 const state = reactive({
-  contact: {},
+  name: '',
+  email: '',
+  phone: '',
+  image: null,
   isLoading: false
 })
+
+function handleFileUpload(event){
+  state.image = event.target.files[0];
+}
 
 async function getContact() {
   state.isLoading = true;
   await apiClient.get(`/api/contact/show/${route.params.id}`).then((response) => {
-    state.contact = response.data;
+    state.name = response.data.name;
+    state.email = response.data.email;
+    state.phone = response.data.phone;
+    //state.image = response.data.image;
   }).catch((error) => {
     toast.error("Falha ao carregar o usuario");
   });
   state.isLoading = false;
 }
 async function updateContact(){
-  await apiClient.put(`/api/contact/update/${route.params.id}`, {
-    name: state.contact.name,
-    email: state.contact.email,
-    phone: state.contact.phone,
+  await apiClient.post(`/api/contact/update/${route.params.id}`, {
+    name: state.name,
+    email: state.email,
+    phone: state.phone,
+    image: state.image ?? ''
+  }, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   }).then(() => {
-    toast.success(`${state.contact.name} foi atualizado com sucesso.`);
+    toast.success(`${state.name} foi atualizado com sucesso.`);
     router.back();
   })
       .catch((error) => {
@@ -38,15 +53,14 @@ async function updateContact(){
 }
 onMounted(getContact);
 </script>
-
 <template>
   <div class="bg-white rounded-2xl shadow-2xl w-96 lg:w-1/3 justify-center px-6 py-20 lg:px-8">
-    <h1 class="text-gray-900 tracking-tight font-bold text-2xl text-center mb-3">Editar {{ state.contact.name }}</h1>
-    <form @submit.prevent="updateContact" class="flex flex-col p-2">
-      <input id="name" v-model="state.contact.name" type="text" placeholder="Nome" />
-      <input id="phone" v-model="state.contact.phone" type="text" placeholder="Telefone" />
-      <input id="email" v-model="state.contact.email" type="text" placeholder="E-mail" />
-      <input id="image" type="file" placeholder="Foto" />
+    <h1 class="text-gray-900 tracking-tight font-bold text-2xl text-center mb-3">Editar {{ state.name }}</h1>
+    <form @submit.prevent="updateContact" class="flex flex-col p-2" type="multipart/form-data">
+      <input id="name" v-model="state.name" type="text" placeholder="Nome" />
+      <input id="phone" v-model="state.phone" type="text" placeholder="Telefone" />
+      <input id="email" v-model="state.email" type="text" placeholder="E-mail" />
+      <input id="image" type="file" @change="handleFileUpload" placeholder="Foto" />
       <button id="submit-btn" type="submit">Editar</button>
       <button id="submit-btn" type="button" @click="router.back()">Cancelar</button>
     </form>

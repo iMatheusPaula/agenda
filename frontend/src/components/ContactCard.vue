@@ -17,7 +17,7 @@ function goToContactPage() {
     <div class="gap-x-4 flex justify-self-auto bg-white rounded-xl shadow-sm p-5 m-3 cursor-pointer hover:bg-gray-100"
          @click="goToContactPage"
     >
-      <Image :image="contact.image" :name="contact.name" class="h-12 w-12" />
+      <Image :image="contact.image" class="h-12 w-12" />
       <div class="min-w-0 flex-auto">
         <h3 class="font-semibold text-gray-900">{{ contact.name }}</h3>
         <p class="text-sm font-semibold text-gray-600">{{ contact.phone }}</p>

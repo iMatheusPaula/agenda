@@ -1,15 +1,14 @@
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 const props = defineProps({
   image: String,
-  name: String,
-  classImg: String,
 })
-const nameFirst = ref(props.name[0] ? "" : "");
-const img = ref(`http://192.168.1.9:8000/storage/${props.image}`)
+const img = computed(() => {
+  if(props.image) return 'http://192.168.1.9:8000/storage/'+props.image;
+  else return 'http://192.168.1.9:8000/storage/images/nophoto.jpg';
+})
 </script>
 <template>
-  <img :src="img" alt="" class="rounded-full" v-if="image" />
-  <div v-else class="bg-black text-white text-center text-xl rounded-full w-full h-full">{{ nameFirst }}</div>
+  <img :src="img" alt="" class="rounded-full" />
 </template>
