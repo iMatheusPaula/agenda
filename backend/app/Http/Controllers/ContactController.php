@@ -61,8 +61,9 @@ class ContactController extends Controller
     {
         try{
             $authUser = Auth::user()->id;
-            //VERIFICAR SE O LOGADO É O DONO DO CONTATO!
-            $response = Contact::where('id', '=', $id)->first();
+            $response = Contact::where('id', '=', $id)
+                ->where('user_id', '=', $authUser)
+                ->firstOrFail();
             return response()->json($response, Response::HTTP_OK);
         } catch (\Exception $e){
             return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -83,6 +84,18 @@ class ContactController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            $authUser = Auth::user()->id;
+            $response = Contact::where('id', $id)
+                ->where('user_id', $authUser)
+                ->delete();
+            if(!$response) return response()->json('', Response::HTTP_INTERNAL_SERVER_ERROR);
+            else return response()->json('', Response::HTTP_NO_CONTENT);
+        }
+        catch (\Exception $e){
+            return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
+            //REMOVE $e
+        }
+
     }
 }

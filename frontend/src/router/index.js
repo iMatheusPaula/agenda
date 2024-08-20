@@ -27,6 +27,14 @@ export const routes = [
         },
     },
     {
+        path: '/contact/destroy/:id/:name',
+        name: 'ContactDestroy',
+        component: () => import('@/views/ContactDestroyView.vue'),
+        meta: {
+            auth: true
+        },
+    },
+    {
         path: '/login',
         name: 'Login',
         component: () => import('@/views/LoginView.vue'),

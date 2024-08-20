@@ -24,3 +24,6 @@ Route::get('/contact/index', [\App\Http\Controllers\ContactController::class, 'i
 
 Route::get('/contact/show/{id}', [\App\Http\Controllers\ContactController::class, 'show'])
     ->name('contact.show')->middleware(['web','auth:sanctum']);
+
+Route::delete('/contact/destroy/{id}', [\App\Http\Controllers\ContactController::class, 'destroy'])
+    ->name('contact.destroy')->middleware(['web','auth:sanctum']);
