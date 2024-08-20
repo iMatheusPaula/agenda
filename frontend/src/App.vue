@@ -29,7 +29,7 @@ async function logoutHandler() {
       </span>
     </div>
   </header>
-  <main class="h-screen grid place-items-center bg-gradient-to-r from-violet-500 to-fuchsia-500">
+  <main class="min-h-screen bg-fixed grid place-items-center bg-gradient-to-r from-violet-500 to-fuchsia-500">
     <RouterView />
   </main>
 </template>
