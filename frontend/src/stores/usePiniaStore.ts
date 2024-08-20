@@ -3,6 +3,7 @@ import apiClient from "@/services/apiClient";
 import {defineStore} from "pinia";
 import {useRouter} from "vue-router";
 import useUserStore from "@/stores/useUserStore";
+import {useToast} from "vue-toastification";
 
 type User = {
     id: number,
@@ -15,6 +16,14 @@ type Credentials = {
     password: string
 }
 
+type Register = {
+    name: string,
+    email: string,
+    password: string,
+    password_confirmation: string
+}
+
+const toast = useToast();
 const router = useRouter();
 
 export const usePiniaStore = defineStore('pinia', () => {
@@ -28,22 +37,15 @@ export const usePiniaStore = defineStore('pinia', () => {
     const login = async function (credentials: Credentials) {
         await apiClient.get('/sanctum/csrf-cookie');
         await apiClient.post('/api/login', credentials)
-            .then((response) => {
-            console.log(response);
-        }).catch((error) => {
-            console.log(error);
-        });
         await getUser();
-        await router.push({ name: 'Home' });
+    }
+    const register = async function (credentials: Register) {
+        await apiClient.get('/sanctum/csrf-cookie');
+        await apiClient.post('/api/register', credentials);
     }
     const logout = async function () {
-        await apiClient.get('/api/logout').then((response: any) => {
-            console.log(response)
-        }).catch((error: any) => {
-            console.log(error)
-        });
+        await apiClient.post('/api/logout');
         user.value = null;
-        await router.push({ name: 'Login' });
     }
-    return { user, isLoggedIn, getUser, login, logout }
+    return { user, isLoggedIn, getUser, login, register, logout }
 }, {persist: true});

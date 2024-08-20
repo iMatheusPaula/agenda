@@ -1,15 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import {usePiniaStore} from "@/stores/usePiniaStore";
-
-import LoginView from "@/views/LoginView.vue";
-import Home from "@/views/Home.vue";
-import addContact from "@/views/AddContact.vue";
 
 export const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home,
+        component: () => import('@/views/Home.vue'),
         meta: {
             auth: true
         }
@@ -33,7 +29,15 @@ export const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: LoginView,
+        component: () => import('@/views/LoginView.vue'),
+        meta: {
+            auth: false
+        }
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: () => import('@/views/RegisterView.vue'),
         meta: {
             auth: false
         }
