@@ -13,7 +13,7 @@ const state = reactive({
   isLoading: false,
 });
 
-async function getUser() {
+async function getContact() {
   state.isLoading = true;
   await apiClient.get(`/api/contact/show/${route.params.id}`).then((response) => {
     state.contact = response.data;
@@ -26,9 +26,11 @@ async function getUser() {
 function bntDeleteHandler(){
   router.push({ name: 'ContactDestroy', params: { id: state.contact.id, name: state.contact.name }})
 }
-onMounted(getUser);
+function btnUpdateHandler(){
+  router.push({ name: 'ContactUpdate', params: { id: state.contact.id }})
+}
+onMounted(getContact);
 </script>
-
 <template>
   <div v-if="state.isLoading">
     Carregando..
@@ -41,7 +43,7 @@ onMounted(getUser);
         <p>{{ state.contact.email }}</p>
       </div>
       <div class="flex-col flex">
-        <span class="cursor-pointer">Editar</span>
+        <span class="cursor-pointer" @click="btnUpdateHandler">Editar</span>
         <span class="cursor-pointer" @click="bntDeleteHandler">Deletar</span>
       </div>
     </div>

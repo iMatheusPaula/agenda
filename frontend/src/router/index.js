@@ -35,6 +35,14 @@ export const routes = [
         },
     },
     {
+        path: '/contact/update/:id',
+        name: 'ContactUpdate',
+        component: () => import('@/views/ContactUpdateView.vue'),
+        meta: {
+            auth: true
+        },
+    },
+    {
         path: '/login',
         name: 'Login',
         component: () => import('@/views/LoginView.vue'),

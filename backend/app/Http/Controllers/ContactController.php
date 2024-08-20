@@ -74,15 +74,29 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        try{
+            $authUser = Auth::user()->id;
+            $contact = Contact::where('user_id', '=', $authUser)->findOrFail($id);
+            if($contact){
+                $contact->update($request->all());
+                return response()->json('success', Response::HTTP_OK);
+            }
+        }
+        catch (\Exception $e){
+            return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
+            //REMOVE $e
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         try{
             $authUser = Auth::user()->id;
