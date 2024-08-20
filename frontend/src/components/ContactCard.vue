@@ -13,21 +13,16 @@ function goToContactPage() {
 </script>
 
 <template>
-  <div class="lg:w-1/2">
-    <div class="gap-x-4 flex justify-self-auto bg-white rounded-xl shadow-sm p-5 m-3 cursor-pointer hover:bg-gray-100"
+    <div class="gap-4 flex bg-white rounded-xl shadow-sm p-5 my-3 cursor-pointer hover:bg-gray-100"
          @click="goToContactPage"
     >
-      <Image :image="contact.image" class="h-12 w-12" />
-      <div class="min-w-0 flex-auto">
-        <h3 class="font-semibold text-gray-900">{{ contact.name }}</h3>
-        <p class="text-sm font-semibold text-gray-600">{{ contact.phone }}</p>
-        <p>{{ contact.email }}</p>
+      <div class="flex items-center">
+        <Image :image="contact.image" class="h-20 w-20" />
       </div>
-
+      <div class="flex flex-col justify-center">
+        <h3 class="font-semibold text-gray-900">{{ contact.name }}</h3>
+        <p class="text-sm text-gray-900">{{ contact.phone }}</p>
+        <p class="text-sm text-gray-900">{{ contact.email }}</p>
+      </div>
     </div>
-  </div>
 </template>
-
-<style scoped>
-
-</style>

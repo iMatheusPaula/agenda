@@ -68,6 +68,6 @@ onMounted(getContact);
 </template>
 <style scoped>
 button{
-  @apply p-2 bg-blue-600 rounded-md mx-2 mt-4 hover:bg-blue-500 leading-6 shadow-inner text-white transition duration-200 w-full
+  @apply p-2 bg-blue-600 rounded-md mx-2 mt-4 hover:bg-blue-500 shadow-inner text-white transition duration-200 w-full
 }
 </style>
