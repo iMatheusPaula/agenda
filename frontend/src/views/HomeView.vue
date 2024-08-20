@@ -3,7 +3,6 @@ import apiClient from '@/services/apiClient.js';
 import {onMounted, reactive} from "vue";
 import ContactCard from "@/components/ContactCard.vue";
 import {useToast} from "vue-toastification";
-import Image from "@/components/Image.vue";
 import IconLoading from "@/components/IconLoading.vue";
 
 const toast = useToast();

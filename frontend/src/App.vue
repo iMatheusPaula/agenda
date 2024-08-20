@@ -20,10 +20,10 @@ async function logoutHandler() {
       <RouterLink to="/">Agenda :)</RouterLink>
     </div>
     <div v-if="auth.isLoggedIn" class="block text-black/90">
-      <span class="px-5">Olá, {{ auth.user?.name }}</span>
+      <span class="px-3">Olá, {{ auth.user?.name }}</span>
       <span
-        class="bg-black text-white rounded px-6 py-2 text-xs uppercase transition duration-150 hover:bg-black/90 cursor-pointer"
-        @click="logoutHandler()"
+        class="bg-black text-white rounded-md px-3 py-2.5 text-xs uppercase transition duration-200 hover:bg-gray-800 cursor-pointer"
+        @click="logoutHandler"
       >
         Sair
       </span>
