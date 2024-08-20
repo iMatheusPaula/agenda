@@ -113,12 +113,10 @@ class ContactController extends Controller
     {
         try{
             $authUser = Auth::user()->id;
-            $contact = Contact::where('id', $id)
-                ->where('user_id', $authUser)
-                ->delete();
+            $contact = Contact::where('user_id', $authUser)->findOrFail($id);
             if($contact->image) Storage::disk('public')->delete($contact->image);
-            if(!$contact) return response()->json('', Response::HTTP_INTERNAL_SERVER_ERROR);
-            else return response()->json('', Response::HTTP_NO_CONTENT);
+            $contact->delete();
+            return response()->json('', Response::HTTP_NO_CONTENT);
         }
         catch (\Exception $e){
             return response()->json($e, Response::HTTP_INTERNAL_SERVER_ERROR);
