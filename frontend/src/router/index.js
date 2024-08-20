@@ -13,7 +13,7 @@ export const routes = [
     {
         path: '/addContact',
         name: 'addContact',
-        component: () => import('@/views/AddContactView.vue'),
+        component: () => import('@/views/ContactAddView.vue'),
         meta: {
             auth: true
         }
