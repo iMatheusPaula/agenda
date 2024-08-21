@@ -6,11 +6,14 @@ use App\Http\Controllers\ContactController;
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])
     ->name('auth.login')->middleware('web');
 
-Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register'])
-    ->name('auth.register')->middleware('web');
-
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])
     ->name('auth.logout')->middleware(['web','auth:sanctum']);
+
+Route::get('/user', [\App\Http\Controllers\UserController::class, 'show'])
+    ->name('user.show')->middleware(['web','auth:sanctum']);
+
+Route::post('/register', [\App\Http\Controllers\UserController::class, 'store'])
+    ->name('user.store')->middleware('web');
 
 Route::group([
     'prefix' => 'contact',
