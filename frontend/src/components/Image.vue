@@ -5,8 +5,8 @@ const props = defineProps({
   image: String,
 })
 const img = computed(() => {
-  if(props.image) return 'http://192.168.1.9:8000/storage/'+props.image;
-  else return 'http://192.168.1.9:8000/storage/images/nophoto.jpg';
+  if(props.image) return 'http://localhost:8000/storage/'+props.image;
+  else return 'http://localhost:8000/storage/images/nophoto.jpg';
 })
 </script>
 <template>
